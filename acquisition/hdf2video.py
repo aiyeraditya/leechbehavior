@@ -2,7 +2,15 @@ import h5py, time
 import sys
 from imageio_ffmpeg import write_frames
 import numpy as np
+import matplotlib.pyplot as plt
 
+
+
+def make_plot(file_name, keys):
+    fig,ax = plt.subplots()
+    ax.plot(np.diff(keys))
+    plt.tight_layout()
+    plt.savefig(file_name)
 
 def vidwrite(file_in, framerate=50,
                 vcodec='libx264', crf = "10"):
@@ -39,10 +47,10 @@ def vidwrite(file_in, framerate=50,
     except Exception as e:
     	print("Caught exception at writer.py OpenWriter: {}".format(e))
 
-
     with h5py.File(file_in, 'r') as file_:
         keys = list(file_.keys())
-        np.save(file_out[:-4] + 'timestamps.npy', np.array(keys))
+        np.save(file_out[:-4] + 'timestamps.npy', np.array(keys, dtype = np.uint64))
+        make_plot(file_out[:-4] + 'timestamps.png',  np.array(keys, dtype = np.uint64))
         print('Keys Loaded. Now starting FFMPEG pipe')
         for key in keys:
             try:

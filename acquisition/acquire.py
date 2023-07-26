@@ -13,6 +13,7 @@ import numpy as np
 import time
 import h5py
 import yaml
+import trigger
 
 def get_devices(tlFactory):
     devices = tlFactory.EnumerateDevices()
@@ -39,17 +40,22 @@ def initialize_device(tlFactory, device):
         print(f'Exception Line 40 {e}')
         camera.Close()
 
-def capture_write(camera, cam_name, out_file, num_frames):
+def start_capture(cam_num, out_path, frame_rate, duration):
+    tlFactory = pylon.TlFactory.GetInstance()
+    devices = get_devices(tlFactory)
+    camera, cam_name = initialize_device(tlFactory, devices[cam_num]) 
     try:
-        with h5py.File(out_file, 'w') as hf:
+        camera.StartGrabbing(pylon.GrabStrategy_OneByOne)
+        with h5py.File(f'{out_path}_{cam_name}.h5', 'w') as hf:
             gs = camera.RetrieveResult(10000, pylon.TimeoutHandling_ThrowException)
-            print(f'{cam_name} acquired first image at {time.time()}')
-            for i in range(num_frames):
+            print(f'{cam_name} Got first image at {time.time()}')
+            for i in range(duration*frame_rate):
                 grabResult = camera.RetrieveResult(1000, pylon.TimeoutHandling_ThrowException)
                 hf.create_dataset(f"{grabResult.TimeStamp}",  data=grabResult.GetArray(),)
         print(f'Acquisiton Complete {cam_name}')
     except Exception as e:
         print(f'Exception Line 58 {e}')
+    camera.Close()
 
 def get_camera(cam_num):
     tlFactory = pylon.TlFactory.GetInstance()
