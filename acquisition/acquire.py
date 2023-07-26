@@ -2,7 +2,6 @@
 """
 MultiCamera Acquisition
 
-Writing a numpy array of 1536x2048 takes 1ms on this computer according to %timeit tests
 """
 import os
 
@@ -40,42 +39,26 @@ def initialize_device(tlFactory, device):
         print(f'Exception Line 40 {e}')
         camera.Close()
 
-
-def start_capture(cam_num, out_path, frame_rate, duration):
-    tlFactory = pylon.TlFactory.GetInstance()
-    devices = get_devices(tlFactory)
-    camera, cam_name = initialize_device(tlFactory, devices[cam_num])
+def capture_write(camera, cam_name, out_file, num_frames):
     try:
-        camera.StartGrabbing(pylon.GrabStrategy_OneByOne)
-        with h5py.File(f'{out_path}_{cam_name}.h5', 'w') as hf:
+        with h5py.File(out_file, 'w') as hf:
             gs = camera.RetrieveResult(10000, pylon.TimeoutHandling_ThrowException)
-            print(f'{cam_name} Got first image at {time.time()}')
-            for i in range(duration*frame_rate):
+            print(f'{cam_name} acquired first image at {time.time()}')
+            for i in range(num_frames):
                 grabResult = camera.RetrieveResult(1000, pylon.TimeoutHandling_ThrowException)
                 hf.create_dataset(f"{grabResult.TimeStamp}",  data=grabResult.GetArray(),)
         print(f'Acquisiton Complete {cam_name}')
     except Exception as e:
         print(f'Exception Line 58 {e}')
-    camera.Close()
-    
-def get_timestamps():
+
+def get_camera(cam_num):
     tlFactory = pylon.TlFactory.GetInstance()
     devices = get_devices(tlFactory)
-    cameras = [initialize_device(tlFactory, device)[0] for device in devices]
-    dict_ = {}
-    for cam in cameras:
-        cam.TimestampLatch.Execute()
-        dict_[cam.DeviceInfo.GetSerialNumber() + 'Time'] = time.time()
-        print(f"Timestamp Latch at {dict_[cam.DeviceInfo.GetSerialNumber() + 'Time']}")
-    for cam in cameras:
-        dict_[cam.DeviceInfo.GetSerialNumber()] = cam.TimestampLatchValue.GetValue()
-    for cam in cameras:
-        cam.Close()
-    print(dict_)
-    with open(f'timestamps.yml', 'w') as outfile:
-        yaml.dump(dict_, outfile, default_flow_style=False)
-    return dict_
+    camera, cam_name = initialize_device(tlFactory, devices[cam_num])
+    camera.StartGrabbing(pylon.GrabStrategy_OneByOne)
+    return camera, cam_name
+
     
 if __name__ == '__main__':
-    print('Acquisition Started')
+    print('This script does acquisition')
 
