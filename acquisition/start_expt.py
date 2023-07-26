@@ -47,9 +47,10 @@ def initiate_acquisition(folder_name, time_):
     
     for process in process_list:
         process.join()
+    return out_path
 
 def start_stimulus():
-    print('Stimulus Started Here')
+    stimulus_process = subprocess.Popen(['python', '../grating_test.py'])
     
 if __name__ == '__main__':
     folder_name = sys.argv[1]
@@ -66,10 +67,11 @@ if __name__ == '__main__':
     print('Cameras Initated')
 
     trigger_status = trigger.StartTriggers(framerate, ardu)
-    start_stimulus()
-    initiate_acquisition(folder_name, time_)
+    #start_stimulus()
+    out_path = initiate_acquisition(folder_name, time_)
     
     for i in range(n_cams):
+        cam_name = camera_array[i][1]
         file_path = f'{out_path[i]}{time_}_{cam_name}.h5'
         post_process_h5(file_path, framerate)
 

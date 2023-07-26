@@ -8,8 +8,6 @@ Created on Fri Mar 17 15:09:49 2023
 import serial
 import time
 import sys
-from watchdog.events import FileSystemEventHandler
-from watchdog.observers import Observer
 
 def StartTriggers(framerate, ardu):
     try:
