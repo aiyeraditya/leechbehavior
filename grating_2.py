@@ -1,8 +1,8 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2022.2.4),
-    on Fr 21 Jul 2023 20:16:59 
+    on Mi 26 Jul 2023 17:02:08 
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -54,7 +54,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='/home/scholz_la/Desktop/grating_lastrun.py',
+    originPath='/home/scholz_la/Desktop/grating.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -68,7 +68,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # --- Setup the Window ---
 win = visual.Window(
-    size=(1024, 768), fullscr=True, screen=1, 
+    size=[1920, 1080], fullscr=True, screen=1, 
     winType='pyglet', allowStencil=False,
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
@@ -99,14 +99,14 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 grating = visual.GratingStim(
     win=win, name='grating',
     tex='sin', mask=None, anchor='center',
-    ori=90.0, pos=(0, 0), size=(2, 1), sf=15.0, phase=1.0,
+    ori=90.0, pos=(0, 0), size=(2, 1), sf=20.0, phase=1.0,
     color=[0,1,0], colorSpace='rgb',
     opacity=None, contrast=-1.0, blendmode='avg',
     texRes=128.0, interpolate=True, depth=0.0)
 grating_2 = visual.GratingStim(
     win=win, name='grating_2',
     tex='sin', mask=None, anchor='center',
-    ori=90.0, pos=(0, 0), size=(2, 1), sf=15.0, phase=1.0,
+    ori=90.0, pos=(0, 0), size=(2, 1), sf=20.0, phase=1.0,
     color=[0,1,0], colorSpace='rgb',
     opacity=None, contrast=-1.0, blendmode='avg',
     texRes=128.0, interpolate=True, depth=-1.0)
@@ -117,7 +117,7 @@ noise = visual.NoiseStim(
     phase=0.0,
     color=[1,1,1], colorSpace='rgb',     opacity=None, blendmode='avg', contrast=1.0,
     texRes=128, filter=None,
-    noiseType='White', noiseElementSize=[0.0625], 
+    noiseType='Isotropic', noiseElementSize=[0.0625], 
     noiseBaseSf=8.0, noiseBW=1.0,
     noiseBWO=30.0, noiseOri=0.0,
     noiseFractalPower=0.0,noiseFilterLower=1.0,
@@ -129,14 +129,14 @@ noise.buildNoise()
 grating = visual.GratingStim(
     win=win, name='grating',
     tex='sin', mask=None, anchor='center',
-    ori=0.0, pos=(0, 0), size=(2, 1), sf=15.0, phase=1.0,
+    ori=90.0, pos=(0, 0), size=(2, 1), sf=20.0, phase=1.0,
     color=[0,1,0], colorSpace='rgb',
     opacity=None, contrast=-1.0, blendmode='avg',
     texRes=128.0, interpolate=True, depth=0.0)
 grating_2 = visual.GratingStim(
     win=win, name='grating_2',
     tex='sin', mask=None, anchor='center',
-    ori=0.0, pos=(0, 0), size=(2, 1), sf=15.0, phase=1.0,
+    ori=90.0, pos=(0, 0), size=(2, 1), sf=20.0, phase=1.0,
     color=[0,1,0], colorSpace='rgb',
     opacity=None, contrast=-1.0, blendmode='avg',
     texRes=128.0, interpolate=True, depth=-1.0)
@@ -147,7 +147,7 @@ noise = visual.NoiseStim(
     phase=0.0,
     color=[1,1,1], colorSpace='rgb',     opacity=None, blendmode='avg', contrast=1.0,
     texRes=128, filter=None,
-    noiseType='White', noiseElementSize=[0.0625], 
+    noiseType='Isotropic', noiseElementSize=[0.0625], 
     noiseBaseSf=8.0, noiseBW=1.0,
     noiseBWO=30.0, noiseOri=0.0,
     noiseFractalPower=0.0,noiseFilterLower=1.0,
@@ -178,7 +178,7 @@ _timeToFirstFrame = win.getFutureFlipTime(clock="now")
 frameN = -1
 
 # --- Run Routine "trial" ---
-while continueRoutine and routineTimer.getTime() < 45.0:
+while continueRoutine and routineTimer.getTime() < 75.0:
     # get current time
     t = routineTimer.getTime()
     tThisFlip = win.getFutureFlipTime(clock=routineTimer)
@@ -187,7 +187,7 @@ while continueRoutine and routineTimer.getTime() < 45.0:
     # update/draw components on each frame
     
     # *grating* updates
-    if grating.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+    if grating.status == NOT_STARTED and tThisFlip >= 45-frameTolerance:
         # keep track of start time/frame for later
         grating.frameNStart = frameN  # exact frame index
         grating.tStart = t  # local t and not account for scr refresh
@@ -198,7 +198,7 @@ while continueRoutine and routineTimer.getTime() < 45.0:
         grating.setAutoDraw(True)
     if grating.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > grating.tStartRefresh + 15-frameTolerance:
+        if tThisFlipGlobal > grating.tStartRefresh + 30-frameTolerance:
             # keep track of stop time/frame for later
             grating.tStop = t  # not accounting for scr refresh
             grating.frameNStop = frameN  # exact frame index
@@ -220,7 +220,7 @@ while continueRoutine and routineTimer.getTime() < 45.0:
         grating_2.setAutoDraw(True)
     if grating_2.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > grating_2.tStartRefresh + 15-frameTolerance:
+        if tThisFlipGlobal > grating_2.tStartRefresh + 30-frameTolerance:
             # keep track of stop time/frame for later
             grating_2.tStop = t  # not accounting for scr refresh
             grating_2.frameNStop = frameN  # exact frame index
@@ -282,7 +282,7 @@ for thisComponent in trialComponents:
 if routineForceEnded:
     routineTimer.reset()
 else:
-    routineTimer.addTime(-45.000000)
+    routineTimer.addTime(-75.000000)
 
 # --- Prepare to start Routine "trial" ---
 continueRoutine = True
@@ -303,7 +303,7 @@ _timeToFirstFrame = win.getFutureFlipTime(clock="now")
 frameN = -1
 
 # --- Run Routine "trial" ---
-while continueRoutine and routineTimer.getTime() < 45.0:
+while continueRoutine and routineTimer.getTime() < 75.0:
     # get current time
     t = routineTimer.getTime()
     tThisFlip = win.getFutureFlipTime(clock=routineTimer)
@@ -312,7 +312,7 @@ while continueRoutine and routineTimer.getTime() < 45.0:
     # update/draw components on each frame
     
     # *grating* updates
-    if grating.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+    if grating.status == NOT_STARTED and tThisFlip >= 45-frameTolerance:
         # keep track of start time/frame for later
         grating.frameNStart = frameN  # exact frame index
         grating.tStart = t  # local t and not account for scr refresh
@@ -323,7 +323,7 @@ while continueRoutine and routineTimer.getTime() < 45.0:
         grating.setAutoDraw(True)
     if grating.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > grating.tStartRefresh + 15-frameTolerance:
+        if tThisFlipGlobal > grating.tStartRefresh + 30-frameTolerance:
             # keep track of stop time/frame for later
             grating.tStop = t  # not accounting for scr refresh
             grating.frameNStop = frameN  # exact frame index
@@ -345,7 +345,7 @@ while continueRoutine and routineTimer.getTime() < 45.0:
         grating_2.setAutoDraw(True)
     if grating_2.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > grating_2.tStartRefresh + 15-frameTolerance:
+        if tThisFlipGlobal > grating_2.tStartRefresh + 30-frameTolerance:
             # keep track of stop time/frame for later
             grating_2.tStop = t  # not accounting for scr refresh
             grating_2.frameNStop = frameN  # exact frame index
@@ -407,7 +407,7 @@ for thisComponent in trialComponents:
 if routineForceEnded:
     routineTimer.reset()
 else:
-    routineTimer.addTime(-45.000000)
+    routineTimer.addTime(-75.000000)
 
 # --- End experiment ---
 # Flip one final time so any remaining win.callOnFlip() 

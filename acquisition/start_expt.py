@@ -19,8 +19,8 @@ def start_filming(cam_num, out_path, framerate, duration):
     acquire.start_capture(cam_num, out_path, framerate, duration)
 
 def make_folders(folder_name):
-    out_path = [f'D:/videos/Camera0/{folder_name}/',
-                f'D:/videos/Camera1/{folder_name}/']
+    out_path = [f'/home/scholz_la/Desktop/Data/videos/Camera0/{folder_name}/',
+                f'/home/scholz_la/Desktop/Data/videos/Camera1/{folder_name}/']
     for i in out_path:
         os.makedirs(i, exist_ok = True)
         print(f'Folder created {i}')
@@ -43,20 +43,22 @@ def initiate_acquisition(out_path, time_):
     return out_path
 
 def start_stimulus():
-    stimulus_process = subprocess.Popen(['python', '../grating_test.py'])
+    stimulus_process = subprocess.Popen(['python', '../grating_2.py'])
+    
+def start_trigger():
+    trigger_process = subprocess.Popen(['python', 'trigger.py'])
     
 if __name__ == '__main__':
+    mp.set_start_method('spawn')
     folder_name = sys.argv[1]
     time_ = datetime.datetime.now().strftime('%Y%m%d_%H%M') #Like 20230201_0845
     print(f'Starting at {time.time()}')
     framerate = 50; # Required FrameRate
-    duration = 10; # Required Duration of Filming
+    duration = 120; # Required Duration of Filming
     n_cams = 2;
 
-    ardu = serial.Serial(port='COM3',baudrate=115200,timeout=1)
-    print('Arduino Detected')
-    time.sleep(3)
-    ardu.write(f"2,8,13,{framerate}".encode())
+    start_trigger();
+
     start_stimulus()
     out_path = initiate_acquisition(folder_name, time_)
     
