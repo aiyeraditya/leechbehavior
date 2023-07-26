@@ -19,11 +19,13 @@ def StartTriggers(framerate, ardu):
         pass
 
 def get_arduino():
-    ardu = serial.Serial(port='COM3',baudrate=115200,timeout=1)
+    ardu = serial.Serial(port='/dev/ttyACM0',baudrate=115200,timeout=1)
     return ardu
  
                     
                     
 if __name__ == '__main__':
-    print('This script does triggering')
+    ardu = get_arduino()
+    time.sleep(6);
+    StartTriggers(50, ardu)
 

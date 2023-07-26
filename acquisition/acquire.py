@@ -30,6 +30,7 @@ def initialize_device(tlFactory, device):
     camera.Open()
     
     nodefile = f'cam_features/{device.GetModelName()}_{device.GetSerialNumber()}.pfs';
+    print(nodefile)
     print(f"Using device {device.GetSerialNumber()}")
     try:
         pylon.FeaturePersistence.Load(nodefile, camera.GetNodeMap(), True)
@@ -41,9 +42,11 @@ def initialize_device(tlFactory, device):
         camera.Close()
 
 def start_capture(cam_num, out_path, frame_rate, duration):
+    print(cam_num)
     tlFactory = pylon.TlFactory.GetInstance()
     devices = get_devices(tlFactory)
     camera, cam_name = initialize_device(tlFactory, devices[cam_num]) 
+    print(cam_name)
     try:
         camera.StartGrabbing(pylon.GrabStrategy_OneByOne)
         with h5py.File(f'{out_path}_{cam_name}.h5', 'w') as hf:
