@@ -4,8 +4,6 @@ from imageio_ffmpeg import write_frames
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
 def make_plot(file_name, keys):
     fig,ax = plt.subplots()
     ax.plot(np.diff(keys))
@@ -38,7 +36,7 @@ def vidwrite(file_in, framerate=50,
     		pix_fmt_in="gray", # "bayer_bggr8", "gray", "rgb24", "bgr0", "yuv420p"
     		pix_fmt_out=pix_fmt_out,
     		bitrate=None,
-    		ffmpeg_log_level="info", # "warning", "quiet", "info"
+    		ffmpeg_log_level="quiet", # "warning", "quiet", "info"
     		input_params=["-an"], # "-an" no audio
     		output_params=gpu_params,
     		)
@@ -51,7 +49,7 @@ def vidwrite(file_in, framerate=50,
         keys = list(file_.keys())
         np.save(file_out[:-4] + 'timestamps.npy', np.array(keys, dtype = np.uint64))
         make_plot(file_out[:-4] + 'timestamps.png',  np.array(keys, dtype = np.uint64))
-        print('Keys Loaded. Now starting FFMPEG pipe')
+        print(f"Starting FFMPEG pipe for {file_in.split('/')[-1]}")
         for key in keys:
             try:
                 writer.send(file_[key][()])
