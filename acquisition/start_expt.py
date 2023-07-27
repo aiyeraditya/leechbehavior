@@ -5,7 +5,7 @@ Created on Tue Jan 31 14:23:41 2023
 @author: iyer
 """
 
-import multiprocessing as mp
+from pathos.multiprocessing import ProcessPool
 import acquire, os, sys
 import datetime
 import time
@@ -14,8 +14,9 @@ import shutil
 import hdf2video
 import trigger
     
-def start_filming(cam_num, out_path, framerate, duration):
-    acquire.start_capture(cam_num, out_path, framerate, duration)
+def start_filming(pkg):
+    camera, cam_name, out_path, n_frames = pkg
+    acquire.capture_write(camera, cam_name, out_path, n_frames)
 
 def make_folders(folder_name):
     out_path = [f'D:/videos/Camera0/{folder_name}/',
@@ -35,18 +36,16 @@ def post_process_h5(h5_file, framerate):
     hdf2video.vidwrite(h5_file, framerate)
     shutil.rmtree(h5_file)
 
-def initiate_acquisition(folder_name, time_):
-    process_list = []
+def initiate_acquisition(folder_name, time_, camera_array):
     out_path = make_folders(folder_name)
+    all_args = []
     for i in range(n_cams):
         camera, cam_name = camera_array[i]
         file_path = f'{out_path[i]}{time_}_{cam_name}.h5'
-        p =  mp.Process(target= start_filming, args = [camera, cam_name, file_path, framerate*duration])
-        p.start()
-        process_list.append(p)
-    
-    for process in process_list:
-        process.join()
+        args = [camera, cam_name, file_path, framerate*duration]
+        all_args.append(args)
+    pool = ProcessPool(nodes=n_cams)
+    pool.map(start_filming, all_args)
     return out_path
 
 def start_stimulus():
@@ -68,7 +67,7 @@ if __name__ == '__main__':
 
     trigger_status = trigger.StartTriggers(framerate, ardu)
     #start_stimulus()
-    out_path = initiate_acquisition(folder_name, time_)
+    out_path = initiate_acquisition(folder_name, time_, camera_array)
     
     for i in range(n_cams):
         cam_name = camera_array[i][1]
