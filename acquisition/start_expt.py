@@ -5,7 +5,7 @@ Created on Tue Jan 31 14:23:41 2023
 @author: iyer
 """
 
-from pathos.multiprocessing import ProcessPool
+import multiprocessing as mp
 import acquire, os, sys
 import datetime
 import time
@@ -19,8 +19,8 @@ def start_filming(pkg):
     acquire.capture_write(camera, cam_name, out_path, n_frames)
 
 def make_folders(folder_name):
-    out_path = [f'D:/videos/Camera0/{folder_name}/',
-                f'D:/videos/Camera1/{folder_name}/']
+    out_path = [f'C:/Users/iyer/Desktop/videos/Camera0/{folder_name}/',
+                f'C:/Users/iyer/Desktop/videos/Camera1/{folder_name}/']
     for i in out_path:
         os.makedirs(i, exist_ok = True)
         print(f'Folder created {i}')
@@ -36,22 +36,37 @@ def post_process_h5(h5_file, framerate):
     hdf2video.vidwrite(h5_file, framerate)
     shutil.rmtree(h5_file)
 
+# def initiate_acquisition(folder_name, time_, camera_array):
+#     out_path = make_folders(folder_name)
+#     all_args = []
+#     for i in range(n_cams):
+#         camera, cam_name = camera_array[i]
+#         file_path = f'{out_path[i]}{time_}_{cam_name}.h5'
+#         args = [camera, cam_name, file_path, framerate*duration]
+#         all_args.append(args)
+#     pool = ProcessPool(nodes=n_cams)
+#     pool.map(start_filming, all_args)
+#     return out_path
+
 def initiate_acquisition(folder_name, time_, camera_array):
+    process_list = []
     out_path = make_folders(folder_name)
-    all_args = []
     for i in range(n_cams):
         camera, cam_name = camera_array[i]
-        file_path = f'{out_path[i]}{time_}_{cam_name}.h5'
         args = [camera, cam_name, file_path, framerate*duration]
-        all_args.append(args)
-    pool = ProcessPool(nodes=n_cams)
-    pool.map(start_filming, all_args)
+        p =  mp.Process(target= start_filming, args = args)
+        p.start()
+        process_list.append(p)
+    
+    for process in process_list:
+        process.join()
     return out_path
 
 def start_stimulus():
     stimulus_process = subprocess.Popen(['python', '../grating_test.py'])
     
 if __name__ == '__main__':
+    mp.set_start_method('fork')
     folder_name = sys.argv[1]
     time_ = datetime.datetime.now().strftime('%Y%m%d_%H%M') #Like 20230201_0845
     print(f'Starting at {time.time()}')
