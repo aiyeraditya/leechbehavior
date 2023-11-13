@@ -19,8 +19,8 @@ def start_filming(cam_num, out_path, framerate, duration):
     acquire.start_capture(cam_num, out_path, framerate, duration)
 
 def make_folders(folder_name):
-    out_path = [f'/home/scholz_la/Desktop/Data/videos/Camera0/{folder_name}/',
-                f'/home/scholz_la/Desktop/Data/videos/Camera1/{folder_name}/']
+    out_path = [f'F:/videos/Camera0/{folder_name}/',
+                f'F:/videos/Camera1/{folder_name}/']
     for i in out_path:
         os.makedirs(i, exist_ok = True)
         print(f'Folder created {i}')
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     start_trigger();
 
-    start_stimulus()
+    #start_stimulus()
     out_path = initiate_acquisition(folder_name, time_)
     
     # for i in range(n_cams):
