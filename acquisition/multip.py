@@ -22,12 +22,12 @@ if __name__ == '__main__':
     trigger_process = subprocess.Popen(['python', 'trigger.py'])
     time.sleep(1)
     folder_name = sys.argv[1] #datetime.datetime.now().strftime('%H_%M_%Y')
-    out_path = [f'D:/videos/Camera0/{folder_name}/',
-                f'D:/videos/Camera1/{folder_name}/']
+    out_path = [f'F:/videos/Camera0/{folder_name}/',
+                f'F:/videos/Camera1/{folder_name}/']
     dict_ts = acquire.get_timestamps()
     times = []
     framerate = 50;
-    duration = 10;
+    duration = 120;
     for key in dict_ts.keys():
         if 'Time' in key:
             times.append(dict_ts[key])

@@ -6,7 +6,7 @@ Created on Tue Jan 31 14:23:41 2023
 """
 
 import multiprocessing as mp
-import acquire, os, sys
+import acquire_gpu, os, sys
 import datetime
 import time
 import subprocess
@@ -16,7 +16,7 @@ import serial
 import h5py
     
 def start_filming(cam_num, out_path, framerate, duration):
-    acquire.start_capture(cam_num, out_path, framerate, duration)
+    acquire_gpu.start_capture(cam_num, out_path, framerate, duration)
 
 def make_folders(folder_name):
     out_path = [f'F:/videos/Camera0/{folder_name}/',
@@ -53,8 +53,8 @@ if __name__ == '__main__':
     folder_name = sys.argv[1]
     time_ = datetime.datetime.now().strftime('%Y%m%d_%H%M') #Like 20230201_0845
     print(f'Starting at {time.time()}')
-    framerate = 50; # Required FrameRate
-    duration = 120; # Required Duration of Filming
+    framerate = 100; # Required FrameRate
+    duration = 10; # Required Duration of Filming
     n_cams = 2;
 
     start_trigger();
@@ -67,6 +67,6 @@ if __name__ == '__main__':
     #     file_path = f'{out_path[i]}{time_}_{cam_name}.h5'
     #     post_process_h5(file_path, framerate)
     
-    for i in range(2):
-        h5_file = [out_path[i] + j for j in os.listdir(out_path[i]) if 'h5' in j][0]
-        post_process_h5(out_path[i], h5_file, framerate)
+    # for i in range(2):
+    #     h5_file = [out_path[i] + j for j in os.listdir(out_path[i]) if 'h5' in j][0]
+    #     post_process_h5(out_path[i], h5_file, framerate)

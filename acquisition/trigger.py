@@ -27,5 +27,5 @@ def get_arduino():
 if __name__ == '__main__':
     ardu = get_arduino()
     time.sleep(6);
-    StartTriggers(50, ardu)
+    StartTriggers(100, ardu)
 

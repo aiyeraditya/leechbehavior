@@ -3,7 +3,7 @@ import sys
 from imageio_ffmpeg import write_frames
 import numpy as np
 import matplotlib.pyplot as plt
-
+import os
 
 
 def make_plot(file_name, keys):
@@ -12,21 +12,20 @@ def make_plot(file_name, keys):
     plt.tight_layout()
     plt.savefig(file_name)
 
-def vidwrite(file_in, framerate=50,
-                vcodec='libx264', crf = "10"):
+def vidwrite(file_in, framerate=50, crf = "10"):
+    os.environ['IMAGEIO_FFMPEG_EXE'] = "C:/Users/cne_la/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-6.1-full_build/bin/ffmpeg.exe"
     file_out = '/'.join(file_in.split('/')[:-1])  + file_in.split('/')[-1][:-3] + '_imageio.mp4'
     preset = "fast"
-    gpu_params = ["-r:v", f"{framerate}",
-    			"-preset", preset,
-    			"-tune", "fastdecode",
-    			"-crf", crf,
-    			"-bufsize", "20M",
-    			"-maxrate", "10M",
-    			"-bf:v", "4",]
+    gpu_params = [
+                "-preset",preset,
+                "-bf:v","0", # B-frame spacing "0"-"2" less intensive for encoding
+                "-g","250", # I-frame spacing
+                "-gpu","0",
+                "-b:v","50M",
+                "-fps_mode", "passthrough"
+                ] 
     pix_fmt_out = "yuv420p"
-    codec = "libx264"
-    gpu_params.append("-x264-params")
-    gpu_params.append("nal-hrd=cbr")
+    codec = "h264_nvenc"
 
     try:
     	writer = write_frames(
