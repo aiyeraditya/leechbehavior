@@ -6,8 +6,8 @@ ExposureAuto	Off
 GainAuto	Off
 Width	2048
 Height	800
-OffsetX	8
-OffsetY	496
+OffsetX	16
+OffsetY	400
 CenterX	0
 CenterY	0
 BinningHorizontalMode	Sum
@@ -70,7 +70,7 @@ ROIZoneSelector	Zone7
 ROIZoneOffset	0
 ROIZoneSelector	Zone0
 GainSelector	All
-Gain	0.00000
+Gain	5.00000
 GainSelector	All
 BlackLevelSelector	All
 BlackLevel	0.00000

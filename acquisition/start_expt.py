@@ -45,19 +45,19 @@ def initiate_acquisition(out_path, time_):
 def start_stimulus():
     stimulus_process = subprocess.Popen(['python', '../grating_2.py'])
     
-def start_trigger():
-    trigger_process = subprocess.Popen(['python', 'trigger.py'])
+def start_trigger(framerate):
+    trigger_process = subprocess.Popen(['python', 'trigger.py', f'{framerate}'])
     
 if __name__ == '__main__':
     mp.set_start_method('spawn')
     folder_name = sys.argv[1]
     time_ = datetime.datetime.now().strftime('%Y%m%d_%H%M') #Like 20230201_0845
     print(f'Starting at {time.time()}')
-    framerate = 100; # Required FrameRate
-    duration = 10; # Required Duration of Filming
+    framerate = 50; # Required FrameRate
+    duration = 3600; # Required Duration of Filming
     n_cams = 2;
 
-    start_trigger();
+    start_trigger(framerate);
 
     #start_stimulus()
     out_path = initiate_acquisition(folder_name, time_)
