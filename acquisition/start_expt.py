@@ -53,8 +53,8 @@ if __name__ == '__main__':
     folder_name = sys.argv[1]
     time_ = datetime.datetime.now().strftime('%Y%m%d_%H%M') #Like 20230201_0845
     print(f'Starting at {time.time()}')
-    framerate = 50; # Required FrameRate
-    duration = 3600; # Required Duration of Filming
+    framerate = 10; # Required FrameRate
+    duration = 60; # Required Duration of Filming
     n_cams = 2;
 
     start_trigger(framerate);
