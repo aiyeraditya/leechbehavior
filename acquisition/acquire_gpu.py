@@ -71,7 +71,7 @@ def initialize_device(tlFactory, device):
         camera.MaxNumBuffer = 3500
         return camera, device.GetSerialNumber()
     except Exception as e:
-        print(f'Exception Line 40 {e}')
+        print(f'Exception Initializing Device {e}')
         camera.Close()
 
 def start_capture(cam_num, out_path, frame_rate, duration):
@@ -94,7 +94,7 @@ def start_capture(cam_num, out_path, frame_rate, duration):
         np.save(f'{out_path}_{cam_name}_timestamps.npy', timestamps)
         make_plot(out_path, cam_name, timestamps)
     except Exception as e:
-        print(f'Exception Line 94 {e}')
+        print(f'Exception Start Capture {e}')
     camera.Close()
 
 
